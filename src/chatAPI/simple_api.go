@@ -134,7 +134,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 	}
 
 	var response struct {
-		Response string `json:"response"`
+		Response history_message_node `json:"message"`
 	}
 
 	err = json.Unmarshal(body, &response)
@@ -144,11 +144,11 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 		return
 	}
 
-	text_answer := response.Response
+	text_answer := response.Response.Message
 
 	switch sa.Mode {
 	case ModeChat:
-		sa.History.AddMessage(sa.NameCharacter, text_answer)
+		sa.History.AddMessage(response.Response.Role, response.Response.Message)
 	case ModeSingleMessage:
 		sa.History.Clear()
 	case ModeContinue:
@@ -161,7 +161,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 		if len(text) > max_text_len {
 			text = text[len(text)-max_text_len:]
 		}
-		sa.History.AddMessage("", text)
+		sa.History.AddMessage(response.Response.Role, text)
 
 	default:
 		return "", ErrUnknownMode
