@@ -66,7 +66,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 
 	type history_message_node struct {
 		Role    string `json:"role"`
-		Message string `json:"content"`
+		Message string `json:"message"`
 	}
 
 	final_history := []history_message_node{}
@@ -98,7 +98,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 	url := sa.BaseUrl + "/api/chat"
 
 	// Create a new HTTP request
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(json_payload)))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(json_payload))
 
 	if err != nil {
 		return "", fmt.Errorf("unable to create request %w", err)
