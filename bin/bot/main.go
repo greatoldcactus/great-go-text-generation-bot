@@ -260,8 +260,8 @@ func main() {
 /list  - list models
 /model - select model
 /profile - get user data
-/name_me - set my name for assistant
-/name_assistant - set name for assistant
+/nameme - set my name for assistant
+/nameassistant - set name for assistant
 /clear - clear history
 /tokens - sets token cnt
 			`
@@ -282,7 +282,7 @@ func main() {
 				continue
 			}
 			go CreateSelectKeyboard(bot, user)
-		case "name_me":
+		case "nameme":
 			user, err := GetUser(update.Message.Chat.UserName, update.Message.Chat.ID)
 			if err != nil {
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("unable to get user data: %s", err.Error()))
@@ -297,7 +297,7 @@ func main() {
 			}
 			user.NameMe = new_name
 			user.StoreSimple()
-		case "name_assistant":
+		case "nameassistant":
 			user, err := GetUser(update.Message.Chat.UserName, update.Message.Chat.ID)
 			if err != nil {
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("unable to get user data: %s", err.Error()))
