@@ -66,7 +66,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 
 	type history_message_node struct {
 		Role    string `json:"role"`
-		Message string `json:"message"`
+		Message string `json:"content"`
 	}
 
 	final_history := []history_message_node{}
