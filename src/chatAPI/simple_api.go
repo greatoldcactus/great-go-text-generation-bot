@@ -64,14 +64,24 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 		tokens = 50
 	}
 
+	type history_message_node struct {
+		Role    string `json:"role"`
+		Message string `json:"message"`
+	}
+
+	final_history := []history_message_node{}
+	for _, history_node := range response_history.Data {
+		final_history = append(final_history, history_message_node{history_node.Character, history_node.Message})
+	}
+
 	payload := struct {
-		Model    string  `json:"model"`
-		Messages History `json:"messages"`
-		Stream   bool    `json:"stream"`
-		Options  Options `json:"options"`
+		Model    string                 `json:"model"`
+		Messages []history_message_node `json:"messages"`
+		Stream   bool                   `json:"stream"`
+		Options  Options                `json:"options"`
 	}{
 		Model:    sa.Model,
-		Messages: response_history,
+		Messages: final_history,
 		Stream:   false,
 		Options: Options{
 			Num_predict: int(tokens),
