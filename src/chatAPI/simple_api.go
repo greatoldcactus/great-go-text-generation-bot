@@ -98,7 +98,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 	url := sa.BaseUrl + "/api/chat"
 
 	// Create a new HTTP request
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(json_payload))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(json_payload)))
 
 	if err != nil {
 		return "", fmt.Errorf("unable to create request %w", err)
@@ -113,6 +113,13 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 	}
 
 	if resp.StatusCode != 200 {
+
+		body, err_read := io.ReadAll(resp.Body)
+		if err_read == nil {
+			err := fmt.Errorf("incorrect response from server: %d, response: [====\n%s\n====]", resp.StatusCode, body)
+			return "", err
+
+		}
 
 		err := fmt.Errorf("incorrect response from server: %d", resp.StatusCode)
 		return "", err
