@@ -85,7 +85,7 @@ func (sa *SimpleApiRequest) Generate() (result string, err error) {
 		Stream:   false,
 		Options: Options{
 			Num_predict: int(tokens),
-			Num_thread:  8,
+			Num_thread:  2,
 		},
 	}
 
